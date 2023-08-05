@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<!-- dataSource mysql-->
+	<bean id ="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+		<property name="username" value="legacy"></property>
+		<property name="password" value="admin1234"></property>
+		<property name="url" value="jdbc:mysql://localhost:3307/legacy?useUnicode=true&amp;serverTimezone=Asia/Seoul"></property>	
+	</bean>
+	<bean id = "sqlSessionFactory"
+		class = "org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="mapperLocations" value="classpath:/sqlmap/**/*_sql.xml"></property>
+	</bean>
+	<bean id="sqlSessionTemplate"
+		class = "org.mybatis.spring.SqlSessionTemplate"	>
+		<constructor-arg index="0" ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+	
+<!-- javax mail bean -->
+   <bean id="mailSender" class = "org.springframework.mail.javamail.JavaMailSenderImpl">
+      <property name="host" value="smtp.gmail.com"></property>
+      <property name="port" value="587"></property>
+      <property name="username" value="skylar12200@gmail.com"></property>
+      <property name="password" value="xkdkakuvucoccjxy"></property> <!-- 2단계 인증 앱 비밀번호  -->
+      <property name="javaMailProperties">
+         <props>
+            <prop key="mail.transport.protocol">smtp</prop>
+             <prop key="mail.smtp.auth">true</prop>
+             <prop key="mail.smtp.starttls.enable">true</prop>
+             <prop key="mail.debug">true</prop>
+             <prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+            <prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
+         </props>
+      </property>
+   </bean>
+	
+		
+</beans>
